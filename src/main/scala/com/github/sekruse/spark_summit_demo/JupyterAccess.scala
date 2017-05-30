@@ -21,7 +21,7 @@ object JupyterAccess {
     "plotly" -> "https://cdn.plot.ly/plotly-latest.min"
   )
 
-  def requireJs(module: String, url: String)(implicit publish: Publish): Unit = {
+  def addModule(module: String, url: String)(implicit publish: Publish): Unit = {
     require(!isInitialized)
     requiredModules.put(module, url)
   }

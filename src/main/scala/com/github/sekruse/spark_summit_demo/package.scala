@@ -21,6 +21,6 @@ package object spark_summit_demo {
     PieChart.plot(data, values, labels, name, hoverinfo, showlegend)
   }
 
-  def requireJs(module: String, url: String)(implicit publish: Publish): Unit = JupyterAccess.requireJs(module, url)
+  def addModule(module: String, url: String)(implicit publish: Publish): Unit = JupyterAccess.addModule(module, url)
 
 }
