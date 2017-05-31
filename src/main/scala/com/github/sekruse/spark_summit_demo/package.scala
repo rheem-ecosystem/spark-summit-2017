@@ -17,6 +17,8 @@ package object spark_summit_demo {
   val platformColors = scala.collection.mutable.Map(
     "Java Streams" -> "#0099CC",
     "Apache Spark" -> "#FF6600",
+    "SQLite3" -> "#669933",
+    "PostgreSQL" -> "#0000CC",
     "Channel" -> "#999999"
   )
 
@@ -39,6 +41,7 @@ package object spark_summit_demo {
     * Plot an execution plan from an [[Experiment]] within a Jupyter notebook.
     */
   def plotExecutionPlan(experiment: Experiment, executionPlanId: String = "execution-plan-0")(implicit publish: Publish) = {
+    JupyterAccess.ensureInitialized()
     experiment.getMeasurements.find(_.getId == executionPlanId) match {
       case Some(plan: ExecutionPlanMeasurement) =>
         // Create the nodes from both the channels and operators.
