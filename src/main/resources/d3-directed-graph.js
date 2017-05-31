@@ -7,7 +7,9 @@ requirejs(['d3'], function (d3) {
         // Graph nodes. Format: [{id: <ID>, name: <name>, label: <type>, radius: <radius>, color: <color>}, ...]
         nodes: $nodes,
         // Graph links. Format: [{source: <source node ID>, target: <destination node ID>}, ...]
-        links: $links
+        links: $links,
+        // Graph nodes.
+        legend: $legend
     };
 
     // Obtain the DIV we are supposed to work in.
@@ -44,9 +46,9 @@ requirejs(['d3'], function (d3) {
 
     // Create the force simulation.
     var simulation = d3.forceSimulation()
-        .force("link", d3.forceLink().id(function (d) { return d.id }))
+        .force("link", d3.forceLink().id(function (d) { return d.id }).distance(35))
         .force("collide", d3.forceCollide(function (d) { return d.radius + 8 }).iterations(16))
-        .force("charge", d3.forceManyBody())
+        .force("charge", d3.forceManyBody().strength(-100))
         .force("center", d3.forceCenter(chartWidth / 2, chartHeight / 2))
         .force("y", d3.forceY(0))
         .force("x", d3.forceX(0));
@@ -114,6 +116,28 @@ requirejs(['d3'], function (d3) {
             y: point.y + width * dy / l
         };
     }
+
+
+    // Render the legend.
+    svg.append("g")
+        .selectAll("circle")
+        .data(data.legend)
+        .enter().append("circle")
+        .attr("r", function (d) { return d.radius })
+        .attr("fill", function (d) { return d.color })
+        .attr("transform", function (d, i) { return "translate(15," + (30 * i + 15) + ")" })
+        .attr("stroke", "black")
+        .attr("opacity", 0.9);
+    svg.append("g")
+        .selectAll("text")
+        .data(data.legend)
+        .enter().append("text")
+        .attr("x", function(d, i) { return 35 })
+        .attr("y", function(d, i) { return 30 * i + 20; })
+        .text( function (d) { return d.name; })
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "14px")
+        .attr("fill", "black");
 
     // Register the nodes of with the force simulation.
     var ticked = function () {

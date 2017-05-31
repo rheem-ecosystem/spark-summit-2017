@@ -15,6 +15,7 @@ object DirectedGraph {
 
   def plotDirectedGraph(nodes: Iterable[Node],
                         links: Iterable[Link],
+                        legend: Iterable[Node],
                         width: String,
                         height: String)
                        (implicit publish: Publish) = {
@@ -26,7 +27,8 @@ object DirectedGraph {
     val js = ResourceManager.get("/d3-directed-graph.js", Map(
       "divId" -> divId.toJson.toString,
       "nodes" -> nodes.toJson.toString,
-      "links" -> links.toJson.toString
+      "links" -> links.toJson.toString,
+      "legend" -> legend.toJson.toString
     ))
     publish.js(js)
   }

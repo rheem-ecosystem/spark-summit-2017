@@ -35,10 +35,11 @@ package object spark_summit_demo {
   def plotExecutionPlan(experiment: Experiment, executionPlanId: String = "execution-plan-0")(implicit publish: Publish) = {
     experiment.getMeasurements.find(_.getId == executionPlanId) match {
       case Some(plan: ExecutionPlanMeasurement) =>
+        // Create the nodes from both the channels and operators.
         val nodes = plan.getChannels.map(channel => DirectedGraph.Node(
           id = channel.getId,
           name = channel.getType.split("\\.|\\$").last,
-          label = s"Data quanta type: ${channel.getDataQuantaType.split("\\.|\\$").last}",
+          label = s"Data quanta type: ${channel.getDataQuantaType.split("\\.").last}",
           radius = 10,
           color = platformColors("Channel")
         )) ++ plan.getOperators.map(op => DirectedGraph.Node(
@@ -48,9 +49,29 @@ package object spark_summit_demo {
           radius = 10,
           color = platformColors(op.getPlatform)
         ))
+
+        // Create the links.
         val links = plan.getLinks.map(link => DirectedGraph.Link(link.getSource, link.getDestination))
+
+        // Create a legend entry for any node type.
+        val legend = (plan.getChannels.map(channel => DirectedGraph.Node(
+          id = 0,
+          name = "Channel",
+          label = "",
+          radius = 10,
+          color = platformColors("Channel")
+        )) ++ plan.getOperators.map(op => DirectedGraph.Node(
+          id = 0,
+          name = op.getPlatform,
+          label = "",
+          radius = 10,
+          color = platformColors(op.getPlatform)
+        )))
+          .groupBy(_.name)
+          .map { case (name, group) => group.head }
+
         DirectedGraph.plotDirectedGraph(
-          nodes, links, width = "100%", height = "500px"
+          nodes, links, legend, width = "100%", height = "500px"
         )
       case _ => sys.error("Could not find an execution plan.")
     }
