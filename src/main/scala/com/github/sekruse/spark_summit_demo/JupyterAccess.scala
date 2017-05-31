@@ -18,7 +18,8 @@ object JupyterAccess {
   private var isInitialized = false
 
   private val requiredModules = mutable.Map(
-    "plotly" -> "https://cdn.plot.ly/plotly-latest.min"
+    "plotly" -> "https://cdn.plot.ly/plotly-latest.min",
+    "d3" -> "https://d3js.org/d3.v4.min"
   )
 
   def addModule(module: String, url: String)(implicit publish: Publish): Unit = {
@@ -42,7 +43,7 @@ object JupyterAccess {
     * @return the ID of the new element
     */
   private[spark_summit_demo] def addDiv(width: String = "100%",
-                                        height: String = "100%")
+                                        height: String = "500")
                                        (implicit publish: Publish): String = {
     val id = s"my-div-${idCounter.getAndAdd(1)}"
     publish.html(s"""<div id="$id" style="width: $width; height: $height"></div>""")
