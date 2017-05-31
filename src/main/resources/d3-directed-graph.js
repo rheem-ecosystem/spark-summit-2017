@@ -27,6 +27,20 @@ requirejs(['d3'], function (d3) {
         .attr("height", chartHeight)
         .attr("transform", "translate(" + [margin.left, margin.top] + ")");
 
+    // Create the tooltip.
+    var tooltip = d3.select("#" + divId).append("div")
+        .style("position", "absolute")
+        .style("padding", "5px")
+        .style("border", "1px")
+        .style("border-style", "black")
+        .style("border-color", "green")
+        .style("border-radius", "4px")
+        .style("background", "#CCCCCC")
+        .style("pointer-events", "none")
+        .style("font", "12px sans-serif")
+        .style("color", "white")
+        .style("text-shadow", "0px 0px 3px black")
+        .style("opacity", 0);
 
     // Create the force simulation.
     var simulation = d3.forceSimulation()
@@ -71,6 +85,20 @@ requirejs(['d3'], function (d3) {
         .attr("fill", function (d) { return d.color })
         .attr("stroke", "black")
         .attr("opacity", 0.9)
+        .on("mouseover", function(d) {
+            tooltip.transition()
+                .duration(200)
+                .style("opacity", 1);
+            tooltip.html("<b>" + d.name + "</b><br/>" + d.label)
+                .style("background", d.color)
+                .style("left", (d3.event.layerX + 15) + "px")
+                .style("top", (d3.event.layerY + 15) + "px");
+        })
+        .on("mouseout", function(d) {
+            tooltip.transition()
+                .duration(500)
+                .style("opacity", 0);
+        })
         .call(d3.drag()
             .on("start", dragstarted)
             .on("drag", dragged)

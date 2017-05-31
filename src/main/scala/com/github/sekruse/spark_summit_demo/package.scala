@@ -37,15 +37,14 @@ package object spark_summit_demo {
       case Some(plan: ExecutionPlanMeasurement) =>
         val nodes = plan.getChannels.map(channel => DirectedGraph.Node(
           id = channel.getId,
-          name = channel.getType,
-          label = s"Data quanta type: ${channel.getDataQuantaType}",
-//          label = s"Data quanta type: ${channel.getDataQuantaType.split("\\.").last}",
+          name = channel.getType.split("\\.|\\$").last,
+          label = s"Data quanta type: ${channel.getDataQuantaType.split("\\.|\\$").last}",
           radius = 10,
           color = platformColors("Channel")
         )) ++ plan.getOperators.map(op => DirectedGraph.Node(
           id = op.getId,
           name = if (op.getName ne null) op.getName else "(no name)",
-          label = op.getType.split("\\.").last,
+          label = op.getType.split("\\.|\\$").last,
           radius = 10,
           color = platformColors(op.getPlatform)
         ))
