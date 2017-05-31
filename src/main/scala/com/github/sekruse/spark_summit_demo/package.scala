@@ -20,6 +20,9 @@ package object spark_summit_demo {
     "Channel" -> "#999999"
   )
 
+  /**
+    * Plot a pie chart within a Jupyter notebook.
+    */
   def plotPieChart[T](data: Iterable[T],
                       values: T => Double,
                       labels: T => String,
@@ -32,6 +35,9 @@ package object spark_summit_demo {
     PieChart.plot(data, values, labels, name, hoverinfo, showlegend)
   }
 
+  /**
+    * Plot an execution plan from an [[Experiment]] within a Jupyter notebook.
+    */
   def plotExecutionPlan(experiment: Experiment, executionPlanId: String = "execution-plan-0")(implicit publish: Publish) = {
     experiment.getMeasurements.find(_.getId == executionPlanId) match {
       case Some(plan: ExecutionPlanMeasurement) =>
@@ -77,6 +83,16 @@ package object spark_summit_demo {
     }
   }
 
+  /**
+    * Generate k-means data.
+    */
+  def generateKMeansData(path: String, k: Int, points: Int) =
+    DataGenerator.generateSqliteDbForKMeans(path, k, points)
+
+
+  /**
+    * Add a RequireJS module (or change its definition). This should be done before anything is plotted.
+    */
   def addModule(module: String, url: String)(implicit publish: Publish): Unit = JupyterAccess.addModule(module, url)
 
 }
