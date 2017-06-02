@@ -19,7 +19,15 @@ package object spark_summit_demo {
     "Apache Spark" -> "#FF6600",
     "SQLite3" -> "#669933",
     "PostgreSQL" -> "#0000CC",
-    "Channel" -> "#999999"
+    "Channel" -> "#000000"
+  )
+
+  val platformRadii = scala.collection.mutable.Map(
+    "Java Streams" -> 10,
+    "Apache Spark" -> 10,
+    "SQLite3" -> 10,
+    "PostgreSQL" -> 10,
+    "Channel" -> 5
   )
 
   /**
@@ -49,13 +57,13 @@ package object spark_summit_demo {
           id = channel.getId,
           name = channel.getType.split("\\.|\\$").last,
           label = s"Data quanta type: ${channel.getDataQuantaType.split("\\.").last}",
-          radius = 10,
+          radius = platformRadii("Channel"),
           color = platformColors("Channel")
         )) ++ plan.getOperators.map(op => DirectedGraph.Node(
           id = op.getId,
           name = if (op.getName ne null) op.getName else "(no name)",
           label = op.getType.split("\\.|\\$").last,
-          radius = 10,
+          radius = platformRadii(op.getPlatform),
           color = platformColors(op.getPlatform)
         ))
 
@@ -67,13 +75,13 @@ package object spark_summit_demo {
           id = 0,
           name = "Channel",
           label = "",
-          radius = 10,
+          radius = platformRadii("Channel"),
           color = platformColors("Channel")
         )) ++ plan.getOperators.map(op => DirectedGraph.Node(
           id = 0,
           name = op.getPlatform,
           label = "",
-          radius = 10,
+          radius = platformRadii(op.getPlatform),
           color = platformColors(op.getPlatform)
         )))
           .groupBy(_.name)
