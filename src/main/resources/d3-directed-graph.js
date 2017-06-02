@@ -14,6 +14,7 @@ requirejs(['d3'], function (d3) {
 
     // Obtain the DIV we are supposed to work in.
     var div = document.getElementById(divId);
+    div.style.position = "relative";
     var width = div.clientWidth, height = div.clientHeight;
     var margin = {top: 0, left: 0, bottom: 0, right: 0};
     var chartWidth = width - margin.left - margin.right, chartHeight = height - margin.top - margin.bottom;
@@ -93,8 +94,14 @@ requirejs(['d3'], function (d3) {
                 .style("opacity", 1);
             tooltip.html("<b>" + d.name + "</b><br/>" + d.label)
                 .style("background", d.color)
-                .style("left", (d3.event.layerX + 15) + "px")
-                .style("top", (d3.event.layerY + 15) + "px");
+                .style("left", (d3.mouse(div)[0] + 20) + "px")
+                .style("top", (d3.mouse(div)[1] + 20) + "px");
+        })
+        .on("mousemove", function(d) {
+            tooltip.html("<b>" + d.name + "</b><br/>" + d.label)
+                .style("background", d.color)
+                .style("left", (d3.mouse(div)[0] + 20) + "px")
+                .style("top", (d3.mouse(div)[1] + 20) + "px");
         })
         .on("mouseout", function(d) {
             tooltip.transition()
