@@ -1,4 +1,4 @@
-# Rheem Demo for the Spark Summit 2017 # Rheem <img align="right" width="128px" src="http://da.qcri.org/rheem/images/rheem.png" alt="Rheem logo">
+# Rheem Demo for the Spark Summit 2017 <img align="right" width="128px" src="http://da.qcri.org/rheem/images/rheem.png" alt="Rheem logo">
 
 This repository contains [Jupyter](https://jupyter.org/) notebooks that demonstrate how to program and run Rheem applications. In particular, we provide a notebook with the good ol' WordCount and a notebook running k-means on data that is stored in a SQLite database.
 
