@@ -15,10 +15,11 @@ import scala.collection.JavaConversions._
 package object spark_summit_demo {
 
   val platformColors = scala.collection.mutable.Map(
-    "Java Streams" -> "#0099CC",
-    "Apache Spark" -> "#FF6600",
-    "SQLite3" -> "#669933",
-    "PostgreSQL" -> "#0000CC",
+    "Java Streams" -> "#8FC230",
+    "Apache Spark" -> "#40A0D4",
+    "SQLite3" -> "#7B7B7B",
+    "PostgreSQL" -> "#7B7B7B",
+    "GraphChi" -> "#FFC001",
     "Channel" -> "#000000"
   )
 
